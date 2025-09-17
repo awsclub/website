@@ -7,11 +7,25 @@
   <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' rel='stylesheet'>
   <link rel='icon' href='favicon.png' type='image/png'>
   <style>
-    /* Reset & smooth scroll */
+    /* 
+      Reset & Smooth Scroll
+      ---------------------
+      Establish a universal CSS reset to remove inconsistent default margins and paddings across browsers.
+      Enforce box-sizing to border-box for predictable width/height behaviour.
+      Enable smooth scroll on anchor navigation to improve user experience and accessibility.
+    */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
 
-    /* Base typography & background */
+    /* 
+      Base Typography & Background
+      ----------------------------
+      Define a consistent typeface stack prioritising Inter, Open Sans, Roboto, and common system fonts.
+      Set body background to white for maximum clarity and accessibility.
+      Apply nearly-black text for optimal readability.
+      Use relative font sizing (rem) for responsiveness.
+      Ensure sufficient line-height to promote readability across screen sizes.
+    */
     body {
       font-family: 'Inter', 'Open Sans', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
       background:#FFFFFF;
@@ -20,10 +34,21 @@
       line-height:1.6;
     }
 
-    /* Layout */
+    /* 
+      Layout Container
+      ----------------
+      Define the overall page layout as a flex container.
+      Ensure minimum height equals viewport height, maintaining full-page alignment.
+    */
     .container { display:flex; min-height:100vh; }
 
-    /* Sidebar */
+    /* 
+      Sidebar Navigation
+      ------------------
+      Fix sidebar on the left with dark AWS-inspired background (#232F3E).
+      Assign consistent padding and shadow for professional appearance.
+      Reserve fixed width for clarity and balance with content area.
+    */
     nav {
       width:260px;
       background:#232F3E; /* AWS dark slate */
@@ -37,7 +62,7 @@
       font-weight:700;
       margin-bottom:3rem;
       text-decoration:none;
-      color:#FF9900; /* AWS orange */
+      color:#FF9900; /* AWS orange for strong branding */
     }
     nav a {
       display:block;
@@ -54,11 +79,24 @@
     nav a:focus { color:#FF9900; }
     nav a.active { color:#FF9900; }
 
-    /* Main content */
+    /* 
+      Main Content Area
+      -----------------
+      Offset content margin to account for fixed sidebar.
+      Flex property ensures content adapts to available space.
+    */
     main {
       margin-left:260px;
       flex:1;
     }
+
+    /* 
+      Section Styling
+      ---------------
+      Establish flexible, vertically-centred sections with responsive padding.
+      Integrate fade-in animation base (opacity + translateY) for dynamic appearance.
+      Add smooth transition for entry animations.
+    */
     section {
       display:flex;
       flex-direction:column;
@@ -68,7 +106,7 @@
       min-height:100vh;
       padding:4rem 2rem;
       
-      /* Fade-in animation base */
+      /* Animation base */
       opacity:0;
       transform:translateY(40px);
       transition:opacity 0.8s ease, transform 0.8s ease;
@@ -89,7 +127,12 @@
       color:#444;
     }
 
-    /* Hero section */
+    /* 
+      Hero Section
+      ------------
+      Define introductory hero area with larger heading for emphasis.
+      Include a branded call-to-action button styled with AWS orange.
+    */
     #home {
       background:#FFFFFF;
     }
@@ -111,11 +154,20 @@
     }
     .btn-primary:hover { background:#cc7a00; }
 
-    /* Alternating section backgrounds */
+    /* 
+      Alternating Section Backgrounds
+      -------------------------------
+      Alternate light grey and white to create visual rhythm and avoid monotony.
+    */
     .section-light { background:#F2F3F3; }
     .section-white { background:#FFFFFF; }
 
-    /* Card design */
+    /* 
+      Card Design
+      -----------
+      Use card layout for content emphasis.
+      Apply shadow, rounded corners, and padding for professional and accessible design.
+    */
     .card {
       background:#FFFFFF;
       border-radius:8px;
@@ -125,7 +177,12 @@
       margin:auto;
     }
 
-    /* Footer */
+    /* 
+      Footer
+      ------
+      Provide a consistent footer with dark background.
+      Use muted text colour for subtlety and professionalism.
+    */
     .footer {
       background:#232F3E;
       color:#CCCCCC;
@@ -134,7 +191,12 @@
       font-size:0.9rem;
     }
 
-    /* Mobile toggle */
+    /* 
+      Mobile Navigation Toggle
+      ------------------------
+      Hide hamburger on desktop; show on small screens.
+      Enable slide-in effect for sidebar on mobile.
+    */
     .hamburger {
       display:none;
       position:fixed; top:1rem; left:1rem;
@@ -155,9 +217,21 @@
   </style>
 </head>
 <body>
+  <!-- 
+    Navigation Toggle Button
+    ------------------------
+    Provide an accessible hamburger button for mobile navigation.
+    Place outside sidebar to ensure visibility.
+  -->
   <button class='hamburger' aria-label='Toggle menu'>☰</button>
 
   <div class='container'>
+    <!-- 
+      Sidebar Navigation
+      ------------------
+      Contain site navigation with logo and anchor links.
+      Highlight active section link.
+    -->
     <nav id='sidebar'>
       <a href='#home' class='logo active'>AWS Cloud Club CCT</a>
       <a href='#about'>About</a>
@@ -167,6 +241,7 @@
     </nav>
 
     <main>
+      <!-- Hero Section -->
       <section id='home' class='section-white'>
         <h2>AWS Cloud Club at CCT College Dublin</h2>
         <p>
@@ -177,6 +252,7 @@
         <a href='#about' class='btn-primary'>Learn More</a>
       </section>
 
+      <!-- About Section -->
       <section id='about' class='section-light'>
         <div class='card'>
           <h2>About Us</h2>
@@ -188,6 +264,7 @@
         </div>
       </section>
 
+      <!-- Vision Section -->
       <section id='vision' class='section-white'>
         <div class='card'>
           <h2>Our Vision</h2>
@@ -199,6 +276,7 @@
         </div>
       </section>
 
+      <!-- Team Section -->
       <section id='team' class='section-light'>
         <div class='card'>
           <h2>Our Team</h2>
@@ -209,6 +287,7 @@
         </div>
       </section>
 
+      <!-- Contact Section -->
       <section id='contact' class='section-white'>
         <div class='card'>
           <h2>Contact</h2>
@@ -219,6 +298,7 @@
         </div>
       </section>
 
+      <!-- Footer -->
       <footer class='footer'>
         <p>AWS Cloud Club at CCT College Dublin · © 2025</p>
       </footer>
@@ -226,6 +306,12 @@
   </div>
 
   <script>
+    /*
+      Sidebar Link Activation
+      -----------------------
+      Add interactivity to sidebar links.
+      Implement click event to toggle 'active' class on the selected link.
+    */
     const links = document.querySelectorAll('#sidebar a');
     document.querySelector('.hamburger')
       .addEventListener('click', () =>
@@ -236,7 +322,13 @@
       l.classList.add('active');
     }));
 
-    // Fade-in effect when sections enter viewport
+    /*
+      Section Fade-In Effect
+      ----------------------
+      Apply Intersection Observer API to detect when sections enter viewport.
+      Add 'visible' class to trigger CSS fade-in/slide-up animation.
+      Use threshold to ensure section appears once at least 20% is visible.
+    */
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
