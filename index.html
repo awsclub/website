@@ -3,7 +3,7 @@
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <title>Anich Labs</title>
+  <title>AWS Cloud Club · CCT College Dublin</title>
   <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' rel='stylesheet'>
   <link rel='icon' href='favicon.png' type='image/png'>
   <style>
@@ -13,10 +13,11 @@
 
     /* Base typography & background */
     body {
-      font-family:'Inter',sans-serif;
-      background:#fafafa;
-      color:#333;
-      font-size:1.25rem;
+      font-family: 'Inter', 'Open Sans', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      background:#FFFFFF;
+      color:#16191F;
+      font-size:1.1rem;
+      line-height:1.6;
     }
 
     /* Layout */
@@ -25,8 +26,8 @@
     /* Sidebar */
     nav {
       width:260px;
-      background:#fff;
-      box-shadow:2px 0 8px rgba(0,0,0,0.05);
+      background:#232F3E; /* AWS dark slate */
+      box-shadow:2px 0 8px rgba(0,0,0,0.1);
       padding:2.5rem 1.5rem;
       position:fixed; top:0; left:0; height:100vh;
     }
@@ -36,7 +37,7 @@
       font-weight:700;
       margin-bottom:3rem;
       text-decoration:none;
-      color:#8B0000; /* dark red logo = Home */
+      color:#FF9900; /* AWS orange */
     }
     nav a {
       display:block;
@@ -45,19 +46,18 @@
       text-transform:uppercase;
       letter-spacing:0.05em;
       font-weight:500;
-      font-size:1.375rem;
-      color:#666;
+      font-size:1.25rem;
+      color:#FFFFFF;
       transition:color .2s ease;
     }
     nav a:hover,
-    nav a:focus { color:#444; }
-    nav a.active { color:#8B0000; }
+    nav a:focus { color:#FF9900; }
+    nav a.active { color:#FF9900; }
 
     /* Main content */
     main {
       margin-left:260px;
       flex:1;
-      background:#fff;
     }
     section {
       display:flex;
@@ -65,26 +65,73 @@
       justify-content:center;
       align-items:center;
       text-align:center;
-      height:100vh;
-      padding:0 3rem;
+      min-height:100vh;
+      padding:4rem 2rem;
+      
+      /* Fade-in animation base */
+      opacity:0;
+      transform:translateY(40px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
     }
-    section#home h2 {
-      font-size:3rem;
-      font-weight:600;
-      margin-bottom:1rem;
-      color:#111;
+    section.visible {
+      opacity:1;
+      transform:translateY(0);
     }
     section h2 {
       font-size:2rem;
       font-weight:600;
-      margin-bottom:.75rem;
-      color:#111;
+      margin-bottom:1rem;
+      color:#232F3E;
     }
     section p {
-      max-width:640px;
-      font-size:1.375rem;
-      line-height:1.6;
+      max-width:720px;
+      font-size:1.2rem;
       color:#444;
+    }
+
+    /* Hero section */
+    #home {
+      background:#FFFFFF;
+    }
+    #home h2 {
+      font-size:3rem;
+      font-weight:700;
+      color:#232F3E;
+    }
+    .btn-primary {
+      background-color:#FF9900;
+      color:#FFFFFF;
+      padding:0.75rem 1.5rem;
+      border-radius:6px;
+      text-decoration:none;
+      font-weight:600;
+      display:inline-block;
+      margin-top:2rem;
+      transition:background .2s ease;
+    }
+    .btn-primary:hover { background:#cc7a00; }
+
+    /* Alternating section backgrounds */
+    .section-light { background:#F2F3F3; }
+    .section-white { background:#FFFFFF; }
+
+    /* Card design */
+    .card {
+      background:#FFFFFF;
+      border-radius:8px;
+      padding:2rem;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      max-width:720px;
+      margin:auto;
+    }
+
+    /* Footer */
+    .footer {
+      background:#232F3E;
+      color:#CCCCCC;
+      padding:2rem;
+      text-align:center;
+      font-size:0.9rem;
     }
 
     /* Mobile toggle */
@@ -93,7 +140,7 @@
       position:fixed; top:1rem; left:1rem;
       font-size:1.5rem;
       background:none; border:none; cursor:pointer;
-      z-index:200; color:#111;
+      z-index:200; color:#FFFFFF;
     }
     @media (max-width:767px) {
       .hamburger { display:block; }
@@ -112,7 +159,7 @@
 
   <div class='container'>
     <nav id='sidebar'>
-      <a href='#home' class='logo active'>AWS Cloud Club CCT</a> <!-- logo is Home and starts active -->
+      <a href='#home' class='logo active'>AWS Cloud Club CCT</a>
       <a href='#about'>About</a>
       <a href='#vision'>Vision</a>
       <a href='#team'>Team</a>
@@ -120,49 +167,61 @@
     </nav>
 
     <main>
-      <section id='home'>
-        <h2>AWS Cloud Club 
-          at CCT College Dublin</h2>
+      <section id='home' class='section-white'>
+        <h2>AWS Cloud Club at CCT College Dublin</h2>
         <p>
-          A free student led community supported by Amazon Web Services. 
+          A free student-led community supported by Amazon Web Services. 
           Open to everyone 18+ in Ireland. Join us online or on campus 
           to learn, build and grow together.
         </p>
+        <a href='#about' class='btn-primary'>Learn More</a>
       </section>
 
-      <section id='about'>
-        <h2>About Us</h2>
-        <p>
-          We help students and professionals master cloud computing through 
-          workshops, projects and peer learning. Based at CCT College Dublin, 
-          our activities are free and open to all.
-        </p>
+      <section id='about' class='section-light'>
+        <div class='card'>
+          <h2>About Us</h2>
+          <p>
+            We help students and professionals master cloud computing through 
+            workshops, projects and peer learning. Based at CCT College Dublin, 
+            our activities are free and open to all.
+          </p>
+        </div>
       </section>
 
-      <section id='vision'>
-        <h2>Our Vision</h2>
-        <p>
-          We believe cloud skills should be accessible to all. Our goal is 
-          to connect, inspire, and prepare members for the opportunities 
-          of a cloud-first job market.
-        </p>
+      <section id='vision' class='section-white'>
+        <div class='card'>
+          <h2>Our Vision</h2>
+          <p>
+            We believe cloud skills should be accessible to all. Our goal is 
+            to connect, inspire, and prepare members for the opportunities 
+            of a cloud-first job market.
+          </p>
+        </div>
       </section>
 
-      <section id='team'>
-        <h2>Our Team</h2>
-        <p>
-          Led by student ambassadors and volunteers, the club grows with every member. 
-          Your ideas and energy shape what we do.
-        </p>
+      <section id='team' class='section-light'>
+        <div class='card'>
+          <h2>Our Team</h2>
+          <p>
+            Led by student ambassadors and volunteers, the club grows with every member. 
+            Your ideas and energy shape what we do.
+          </p>
+        </div>
       </section>
 
-      <section id='contact'>
-        <h2>Contact</h2>
-        <p>
-          email: chris@awsclub.ie<br>
-          CCT College Dublin, Ireland.
-        </p>
+      <section id='contact' class='section-white'>
+        <div class='card'>
+          <h2>Contact</h2>
+          <p>
+            email: chris@awsclub.ie<br>
+            CCT College Dublin, Ireland.
+          </p>
+        </div>
       </section>
+
+      <footer class='footer'>
+        <p>AWS Cloud Club at CCT College Dublin · © 2025</p>
+      </footer>
     </main>
   </div>
 
@@ -176,6 +235,17 @@
       links.forEach(x => x.classList.remove('active'));
       l.classList.add('active');
     }));
+
+    // Fade-in effect when sections enter viewport
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(sec => observer.observe(sec));
   </script>
 </body>
 </html>
