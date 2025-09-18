@@ -28,10 +28,14 @@ The site was built with three priorities in mind:
 ## Structure
 
 ```
+```text
 website/
 ├── index.html       # Main page of the website
 ├── favicon.png      # Tab icon for browsers
-├── images/          # Logos, banners, and other visual assets
+├── images/          # Logos, banners, and social icons
+│   ├── github_logo.png
+│   ├── linkedin_logo.png
+│   └── slack_logo.png
 └── assets/
     └── bg/          # Background videos (.webm, .mp4)
 ```
