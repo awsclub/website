@@ -28,7 +28,6 @@ The site was built with three priorities in mind:
 ## Structure
 
 ```
-```text
 website/
 ├── index.html       # Main page of the website
 ├── favicon.png      # Tab icon for browsers
