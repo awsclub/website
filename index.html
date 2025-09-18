@@ -505,72 +505,21 @@
     sections.forEach(sec => observer.observe(sec));
 
     /*
-      SOCIAL ICONS: deep-link to apps with graceful fallback
-      ------------------------------------------------------
+      SOCIAL ICONS: simplified behaviour
+      ----------------------------------
       Strategy:
-      - On iOS/Android: try app scheme; if it fails quickly, open store search;
-        if no store link is provided, fall back to web.
-      - On desktop: open web in a new tab.
-      Notes:
-      - Use store *search* URLs to avoid hard-coding app IDs (safer & future-proof).
+      - Always open the normal web link in a new browser tab.
+      - Works on desktop and mobile without forcing App Store/Play Store.
+      - If the app is installed, the OS/browser may still hand off to it automatically.
     */
-    const deepLinks = {
-      linkedin: {
-        scheme: 'linkedin://company/aws-cloud-club-cct',
-        web: 'https://www.linkedin.com/company/aws-cloud-club-cct/',
-        iosStore: 'https://apps.apple.com/search?term=LinkedIn',
-        androidStore: 'https://play.google.com/store/search?q=LinkedIn&c=apps'
-      },
-      github: {
-        scheme: 'github://orgs/awsclub',
-        web: 'https://github.com/awsclub',
-        iosStore: 'https://apps.apple.com/search?term=GitHub',
-        androidStore: 'https://play.google.com/store/search?q=GitHub&c=apps'
-      },
-      slack: {
-        scheme: 'slack://open',
-        web: 'https://join.slack.com/t/awsclubie/shared_invite/zt-36rnw9sja-XpcRWmJsQmgzL~DZCnYoTA',
-        iosStore: 'https://apps.apple.com/search?term=Slack',
-        androidStore: 'https://play.google.com/store/search?q=Slack&c=apps'
-      }
-    };
-
-    function openSmartLink({ scheme, web, iosStore, androidStore }) {
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-      const isAndroid = /Android/i.test(ua);
-      const isIOS = /iPad|iPhone|iPod/.test(ua);
-
-      // Desktop: open web in new tab
-      if (!isAndroid && !isIOS) {
-        window.open(web, '_blank', 'noopener,noreferrer');
-        return;
-      }
-
-      const start = Date.now();
-
-      // Try to open the app
-      window.location.href = scheme;
-
-      // If app didn't intercept within ~800ms, go to store; else to web
-      setTimeout(() => {
-        const fallback = isIOS ? iosStore : androidStore;
-        // If the time delta is small, assume app not installed
-        if (Date.now() - start < 1200) {
-          window.location.href = fallback || web;
-        }
-      }, 800);
-    }
-
-    // Bind clicks for social icons
     document.querySelectorAll('.social-icons a.social').forEach(a => {
       a.addEventListener('click', e => {
         e.preventDefault();
-        const provider = a.dataset.provider;
-        const cfg = deepLinks[provider];
-        if (!cfg) return window.open(a.getAttribute('href'), '_blank');
-        openSmartLink(cfg);
+        const href = a.getAttribute('href');
+        window.open(href, '_blank', 'noopener,noreferrer');
       });
     });
+
   </script>
 </body>
 </html>
