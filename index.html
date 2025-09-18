@@ -104,6 +104,10 @@
       box-shadow:2px 0 8px rgba(0,0,0,0.1);
       padding:2.5rem 1.5rem;
       position:fixed; top:0; left:0; height:100vh;
+      display:flex;
+      flex-direction:column;
+      transition:left .3s ease; /* enable smooth slide */
+      z-index:100;
     }
     .logo {
       display:block;
@@ -240,17 +244,60 @@
       position:fixed; top:1rem; left:1rem;
       font-size:1.5rem;
       background:none; border:none; cursor:pointer;
-      z-index:200; color:#FFFFFF;
+      z-index:200;
+      color:#232F3E; /* dark by default */
+      transition:color .3s ease;
+    }
+    .hamburger.open { color:#FFFFFF; } /* white when menu open */
+
+    /* Backdrop overlay for mobile menu */
+    #menu-overlay {
+      display:none;
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.4);
+      z-index:90; /* below sidebar, above content */
+      opacity:0;
+      transition:opacity .3s ease;
+    }
+    #menu-overlay.show {
+      display:block;
+      opacity:1;
+    }
+
+    /* Social icons at the bottom of the sidebar */
+    .social-icons {
+      margin-top:auto;                 /* push icons to bottom */
+      display:flex;
+      justify-content:center;          /* center horizontally */
+      gap:1.5rem;                      /* equal spacing */
+      padding:2rem 0;
+    }
+    .social-icons a {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:40px; height:40px;         /* larger clickable area */
+    }
+    .social-icons img {
+      width:32px;
+      height:32px;         
+      transition:filter 0.3s ease;
+
+      /* Stronger white, thicker look */
+      filter: brightness(0) invert(1) contrast(200%);
+    }
+    .social-icons img:hover {
+      /* AWS orange bold */
+      filter: invert(61%) sepia(79%) saturate(427%) hue-rotate(1deg)
+              brightness(101%) contrast(102%)
+              drop-shadow(0 0 0 #FF9900);
     }
     @media (max-width:767px) {
       .hamburger { display:block; }
-      nav {
-        left:-100%; /* hide sidebar off-screen */
-        transition:left .3s ease;
-        z-index:100;
-      }
-      nav.open { left:0; } /* show sidebar when "open" */
-      main { margin-left:0; } /* remove offset so content fills width */
+      nav { left:-100%; }              /* hide sidebar off-screen */
+      nav.open { left:0; }             /* slide-in when open */
+      main { margin-left:0; }          /* remove offset so content fills width */
     }
   </style>
 </head>
@@ -275,8 +322,7 @@
   <div class='container'>
     <!-- 
       SIDEBAR NAVIGATION
-      Contains the logo and navigation links.
-      Links point to sections on the same page.
+      Contains the logo, navigation links, and social icons.
     -->
     <nav id='sidebar'>
       <a href='#home' class='logo active'>AWS Cloud Club CCT</a>
@@ -284,6 +330,19 @@
       <a href='#vision'>Vision</a>
       <a href='#team'>Team</a>
       <a href='#contact'>Contact</a>
+
+      <!-- Social media icons (deep links with fallback) -->
+      <div class="social-icons">
+        <a class="social" data-provider="linkedin" href="https://www.linkedin.com/company/aws-cloud-club-cct/" aria-label="LinkedIn">
+          <img src="assets/icons/linkedin_logo.png" alt="LinkedIn">
+        </a>
+        <a class="social" data-provider="github" href="https://github.com/awsclub" aria-label="GitHub">
+          <img src="assets/icons/github_logo.png" alt="GitHub">
+        </a>
+        <a class="social" data-provider="slack" href="https://join.slack.com/t/awsclubie/shared_invite/zt-36rnw9sja-XpcRWmJsQmgzL~DZCnYoTA" aria-label="Slack">
+          <img src="assets/icons/slack_logo.png" alt="Slack">
+        </a>
+      </div>
     </nav>
 
     <main>
@@ -337,7 +396,7 @@
       <section id='contact'>
         <h2>Contact</h2>
         <p>
-          Email: chris@awsclub.ie<br>
+          Email: chrisanich@linux.com<br>
           Location: CCT College Dublin, Ireland.
         </p>
       </section>
@@ -349,74 +408,168 @@
     </main>
   </div>
 
+  <!-- Backdrop overlay element (for mobile menu) -->
+  <div id="menu-overlay"></div>
+
   <script>
     /*
       12. JAVASCRIPT INTERACTIVITY
       ----------------------------
-      The following code adds interactivity:
       - Toggle sidebar on small screens.
-      - Highlight active navigation link.
-      - Animate sections when they come into view.
+      - Highlight active link.
+      - Smooth scroll + fade-in animation.
+      - Auto-close after 4s if no action.
+      - Overlay click closes menu.
+      - Social icons: open native apps on mobile if available, else store/web.
     */
 
-    // Select all sidebar links
+    // Select DOM elements
     const links = document.querySelectorAll('#sidebar a');
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.querySelector('.hamburger');
+    const overlay = document.getElementById('menu-overlay');
+    let autoCloseTimer;
 
-    // Handle hamburger click: toggle "open" class on sidebar
-    document.querySelector('.hamburger')
-      .addEventListener('click', () =>
-        document.getElementById('sidebar').classList.toggle('open')
-      );
+    // Function: open menu
+    function openMenu() {
+      sidebar.classList.add('open');
+      hamburger.classList.add('open');
+      overlay.classList.add('show');
+      clearTimeout(autoCloseTimer);
+      autoCloseTimer = setTimeout(closeMenu, 4000); // auto-close after 4s
+    }
 
-    /*
-      ACTIVE LINK HIGHLIGHT + SMOOTH SCROLL
-      -------------------------------------
-      - Prevent default anchor jump.
-      - Smoothly scroll to section.
-      - Reset animations for a "replay" effect.
-    */
+    // Function: close menu
+    function closeMenu() {
+      sidebar.classList.remove('open');
+      hamburger.classList.remove('open');
+      overlay.classList.remove('show');
+      clearTimeout(autoCloseTimer);
+    }
+
+    // Toggle menu when hamburger clicked
+    hamburger.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close when overlay is clicked
+    overlay.addEventListener('click', closeMenu);
+
+    // Smooth scroll + active link + close menu
     links.forEach(link => {
+      // Skip social icons (they have class 'social')
+      if (link.classList.contains('social')) return;
+
       link.addEventListener('click', e => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const target = document.getElementById(targetId);
+        // Only intercept internal anchors
+        if (link.getAttribute('href').startsWith('#')) {
+          e.preventDefault();
 
-        // Remove "visible" from all sections
-        document.querySelectorAll("section").forEach(sec => {
-          sec.classList.remove("visible");
-        });
+          // Get target section
+          const targetId = link.getAttribute('href').substring(1);
+          const target = document.getElementById(targetId);
 
-        // Smooth scroll to target
-        window.scrollTo({
-          top: target.offsetTop,
-          behavior: "smooth"
-        });
+          // Remove "active" from all, add to clicked
+          links.forEach(x => x.classList.remove('active'));
+          link.classList.add('active');
 
-        // Re-add "visible" after delay to trigger animation
-        setTimeout(() => {
-          target.classList.add("visible");
-        }, 200);
+          // Smooth scroll
+          window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+
+          // Close menu immediately after link click
+          closeMenu();
+
+          // Reset animations then re-trigger for replay effect
+          document.querySelectorAll('section').forEach(sec => sec.classList.remove('visible'));
+          setTimeout(() => target.classList.add('visible'), 200);
+        }
       });
     });
 
     /*
       INTERSECTION OBSERVER FOR FADE-IN
       ---------------------------------
-      This observes each section.
-      When at least 20% of the section is visible,
-      it adds the "visible" class, triggering the CSS animation.
+      Adds "visible" when 20% of section is in view.
     */
-    const sections = document.querySelectorAll("section");
+    const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.2 });
-
-    // Apply observer to all sections
     sections.forEach(sec => observer.observe(sec));
+
+    /*
+      SOCIAL ICONS: deep-link to apps with graceful fallback
+      ------------------------------------------------------
+      Strategy:
+      - On iOS/Android: try app scheme; if it fails quickly, open store search;
+        if no store link is provided, fall back to web.
+      - On desktop: open web in a new tab.
+      Notes:
+      - Use store *search* URLs to avoid hard-coding app IDs (safer & future-proof).
+    */
+    const deepLinks = {
+      linkedin: {
+        scheme: 'linkedin://company/aws-cloud-club-cct',
+        web: 'https://www.linkedin.com/company/aws-cloud-club-cct/',
+        iosStore: 'https://apps.apple.com/search?term=LinkedIn',
+        androidStore: 'https://play.google.com/store/search?q=LinkedIn&c=apps'
+      },
+      github: {
+        scheme: 'github://orgs/awsclub',
+        web: 'https://github.com/awsclub',
+        iosStore: 'https://apps.apple.com/search?term=GitHub',
+        androidStore: 'https://play.google.com/store/search?q=GitHub&c=apps'
+      },
+      slack: {
+        scheme: 'slack://open',
+        web: 'https://join.slack.com/t/awsclubie/shared_invite/zt-36rnw9sja-XpcRWmJsQmgzL~DZCnYoTA',
+        iosStore: 'https://apps.apple.com/search?term=Slack',
+        androidStore: 'https://play.google.com/store/search?q=Slack&c=apps'
+      }
+    };
+
+    function openSmartLink({ scheme, web, iosStore, androidStore }) {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isAndroid = /Android/i.test(ua);
+      const isIOS = /iPad|iPhone|iPod/.test(ua);
+
+      // Desktop: open web in new tab
+      if (!isAndroid && !isIOS) {
+        window.open(web, '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      const start = Date.now();
+
+      // Try to open the app
+      window.location.href = scheme;
+
+      // If app didn't intercept within ~800ms, go to store; else to web
+      setTimeout(() => {
+        const fallback = isIOS ? iosStore : androidStore;
+        // If the time delta is small, assume app not installed
+        if (Date.now() - start < 1200) {
+          window.location.href = fallback || web;
+        }
+      }, 800);
+    }
+
+    // Bind clicks for social icons
+    document.querySelectorAll('.social-icons a.social').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const provider = a.dataset.provider;
+        const cfg = deepLinks[provider];
+        if (!cfg) return window.open(a.getAttribute('href'), '_blank');
+        openSmartLink(cfg);
+      });
+    });
   </script>
 </body>
 </html>
