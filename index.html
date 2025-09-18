@@ -266,14 +266,16 @@
       opacity:1;
     }
 
-    /* Social icons at the bottom of the sidebar */
+    /* Social icons always at the bottom of the screen */
     .social-icons {
-      position: absolute;
-      bottom: 2rem;       /* distance from bottom */
-      left: 50%;          /* center horizontally */
-      transform: translateX(-50%);
+      position: fixed;
+      bottom: 1.5rem;       /* space from bottom */
+      left: 0;
+      width: 260px;         /* same as sidebar width */
       display: flex;
+      justify-content: center;
       gap: 1.5rem;
+      z-index: 150;         /* above content, inside sidebar */
     }
 
     .social-icons a {
