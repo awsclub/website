@@ -15,7 +15,7 @@ The site was built with three priorities in mind:
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **HTML5 / CSS3 / JavaScript** – No heavy frameworks, so everything is transparent and easy to debug.  
 - **Responsive Design** – Sidebar on desktop, hamburger toggle on mobile.  
@@ -27,17 +27,14 @@ The site was built with three priorities in mind:
 
 ## Structure
 
+```
 website/
-├── index.html # Main page
-├── favicon.png # Tab icon
-├── images/ # Logos, banners
+├── index.html       # Main page of the website
+├── favicon.png      # Tab icon for browsers
+├── images/          # Logos, banners, and other visual assets
 └── assets/
-└── bg/ # Background video (webm/mp4)
-
-
-- `index.html` is fully commented for educational purposes (students can read it line by line).  
-- All styling is inline in `<style>` for simplicity, but could be modularised later.  
-- JavaScript is embedded at the bottom of the page to handle animations and menu toggle.
+    └── bg/          # Background videos (.webm, .mp4)
+```
 
 ---
 
@@ -48,7 +45,7 @@ website/
 - **Animated content** (fade + upward motion).  
 - **Responsive layout** with hamburger menu for mobile users.  
 - **Slack Invite CTA** – Call-to-action button on hero section links directly to Slack community:  
-  [Join us in Slack →](https://join.slack.com/t/awsclubie/shared_invite/zt-36rnw9sja-XpcRWmJsQmgzL~DZCnYoTA)  
+  [Join us in Slack →](https://join.slack.com/t/awsclubie/shared_invite/zt-36rnw9sja-XpcRWmJsQmgzL~DZCnYoTA)
 
 ---
 
